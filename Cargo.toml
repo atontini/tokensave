@@ -197,8 +197,8 @@ cc = "1"
 rustls-native-certs = "0.8"
 
 [dev-dependencies]
+criterion = { version = "6", package = "codspeed-criterion-compat" }
 tempfile = "3"
-criterion = { version = "0.5", features = ["async_tokio", "html_reports"] }
 
 # All integration tests share one binary (tests/integration.rs). The targets
 # after it stay separate because they mutate process-global state that the
@@ -273,6 +273,11 @@ harness = false
 
 [[bench]]
 name = "large_repos"
+harness = false
+
+# Offline, deterministic benchmarks tracked by CodSpeed in CI.
+[[bench]]
+name = "codspeed"
 harness = false
 
 # libsql 0.9.30 closes every local connection twice (`sqlite3_close_v2` on an
