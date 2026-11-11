@@ -99,6 +99,18 @@ pub fn language(key: &str) -> Language {
         .unwrap_or_else(|| panic!("ts_provider: unknown language key '{key}'"))
 }
 
+/// Returns every grammar key compiled into this build, sorted.
+///
+/// Used by the grammar stress harness (`examples/grammar_stress.rs`) and the
+/// `cargo fuzz` target to reach each C grammar without going through an
+/// extractor (#958).
+#[must_use]
+pub fn language_keys() -> Vec<&'static str> {
+    let mut keys: Vec<&'static str> = LANGUAGES.keys().copied().collect();
+    keys.sort_unstable();
+    keys
+}
+
 /// Returns the grammar for a source file, chosen by its extension, or `None`
 /// when no bundled grammar covers it.
 ///

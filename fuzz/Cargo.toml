@@ -1,0 +1,36 @@
+# cargo-fuzz harness for the tree-sitter grammars (#958).
+# A separate workspace: it needs nightly and libFuzzer, so the main build,
+# tests and `cargo package` never see it. See scripts/sanitizers/README.md.
+[package]
+name = "tokensave-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+tree-sitter = "0.26"
+tokensave = { path = "..", default-features = false }
+
+[features]
+default = ["full"]
+full = ["tokensave/full"]
+medium = ["tokensave/medium"]
+lite = ["tokensave/lite"]
+
+[[bin]]
+name = "parse"
+path = "fuzz_targets/parse.rs"
+test = false
+doc = false
+bench = false
+
+# Keep the libsql use-after-free fix (#367) in this workspace too.
+[patch.crates-io]
+libsql = { path = "../vendor/libsql" }
+
+[workspace]
+members = ["."]

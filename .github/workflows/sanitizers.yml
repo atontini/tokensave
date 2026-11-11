@@ -1,0 +1,72 @@
+name: Grammar sanitizers
+
+# Builds every tree-sitter grammar with AddressSanitizer and stress-parses the
+# test fixtures with examples/grammar_stress.rs (#958). Manual only: it needs
+# nightly and takes much longer than CI. See docs/GRAMMAR-SANITIZERS.md.
+on:
+  workflow_dispatch:
+    inputs:
+      mutations:
+        description: Mutated variants per corpus file and grammar
+        default: "24"
+        required: true
+      asserts:
+        description: Keep C assert() enabled (drops -DNDEBUG)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sanitizers-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  # Keep in step with scripts/sanitizers/asan.sh.
+  ASAN_TOOLCHAIN: nightly-2026-10-01
+
+jobs:
+  asan:
+    name: ASan grammar stress
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v5
+
+      # The instrumented target dir is larger than a normal build.
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          swap-storage: false
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.ASAN_TOOLCHAIN }}
+
+      - name: Install clang
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang libclang-rt-dev
+
+      - name: Build and run under AddressSanitizer
+        env:
+          MUTATIONS: ${{ inputs.mutations }}
+          ASSERTS: ${{ inputs.asserts }}
+        run: |
+          flags=()
+          if [ "$ASSERTS" = "true" ]; then flags+=(--asserts); fi
+          scripts/sanitizers/asan.sh "${flags[@]}" -- \
+            --extract --mutations "$MUTATIONS" --timeout-ms 20000 tests/fixtures
+
+      - name: Upload sanitizer reports and last inputs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asan-run
+          path: target/asan-run/
+          retention-days: 14

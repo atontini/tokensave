@@ -13,6 +13,7 @@ and this project uses [maintenance-based versioning](TOKENSAVE-VERSIONING.md), n
 
 ### Added
 
+- **Sanitizer and fuzzing harnesses for the tree-sitter grammars (Refs #958).** `scripts/sanitizers/asan.sh` builds the tree-sitter runtime, every bundled and vendored grammar and the new `examples/grammar_stress.rs` with AddressSanitizer on Linux nightly, then parses each fixture with every grammar, with mutated variants, incremental re-parses and full tree walks, and reports hangs. `fuzz/` adds a `cargo fuzz` target over the same grammars, and a manual **Grammar sanitizers** workflow runs the ASan harness in CI. `ts_provider::language_keys()` lists the compiled grammars. Findings, cost and run time are in `docs/GRAMMAR-SANITIZERS.md`.
 - **Project state can live outside the repository (Refs #919).**
   - Set `TOKENSAVE_STATE_DIR`, or `state_dir` in `~/.tokensave/config.toml` (the variable wins; empty selects the default). Each project then keeps its state in `<base>/projects/<name>-<hash>/`, with `beta/` beneath it for prerelease builds.
   - `<hash>` comes from the root's canonical path, so linked worktrees get separate directories.
