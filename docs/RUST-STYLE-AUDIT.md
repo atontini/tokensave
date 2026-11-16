@@ -16,7 +16,7 @@ into `master`; merge status does not establish release publication.
 | Feature gates for lite-only extraction code | [#974](https://github.com/aovestdipaperino/tokensave/pull/974) | [5f8d06ee](https://github.com/aovestdipaperino/tokensave/commit/5f8d06ee149750cd96b8342ee3403391aa8f3d37) | Lite tests and feature checks passed; doctests passed on retry; full suite not run locally. |
 | Standard string parsing for node/edge kinds and visibility | [#976](https://github.com/aovestdipaperino/tokensave/pull/976) | [40b44015](https://github.com/aovestdipaperino/tokensave/commit/40b44015069a6457d0819b88885801bd77e7aacd) | Formatting/checks passed; local full tests blocked by a Windows file lock. Library API change. |
 | Remove unused resolver database field | [#977](https://github.com/aovestdipaperino/tokensave/pull/977) | [7656f098](https://github.com/aovestdipaperino/tokensave/commit/7656f098fe3d93f4dee18f35c6e777f123fa2d50) | Formatting/checks passed; unrelated Clippy findings; local tests not run. Library API change. |
-| Context manual-review cleanup | [#1027](https://github.com/aovestdipaperino/tokensave/pull/1027) (`refactor/context-style-audit`), draft | Unmerged | Validation below. Depends only on the existing context APIs, not the other audit draft changes. |
+| Context manual-review cleanup | [#1027](https://github.com/aovestdipaperino/tokensave/pull/1027) (`refactor/context-style-audit`), ready for review | Unmerged | Validation below. Depends only on the existing context APIs, not the other audit draft changes. |
 
 ## Context review, 2026-11-16
 
@@ -57,7 +57,7 @@ new macros were introduced; existing formatting/JSON macros express output.
 
 ## Parallel module reviews
 
-Each implementation is published from the user fork in a separate draft PR
+Each implementation is published from the user fork in a separate PR ready for review
 targeting upstream `master` and is unmerged. Their
 reports describe their own source only; context validation does not validate
 the other branches. Independent static review found no concrete behavior
@@ -120,8 +120,9 @@ changes. Logs and exit records remain in `/tmp/*-style-validation-*.log` and
 
 The upstream `master` AGENTS.md blob matched this branch's file
 (`1712682f4e5222e70fd7a6798095ddf11feddb1f`); no guidance update was needed.
-No beta files changed. Full-feature/workspace tests, Windows checks, sanitizers,
-and memory benchmarks were not run for this cleanup.
+No beta files changed. At initial publication, full-feature/workspace tests,
+Windows checks, sanitizers and memory benchmarks had not been run locally.
+Additional validation and current CI results are recorded in the linked PRs.
 
 ## Remaining work
 
