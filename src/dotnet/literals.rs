@@ -32,16 +32,15 @@ pub(super) fn category(source: &str, literal: Node<'_>) -> Option<&'static str> 
 fn argument_category(source: &str, argument: Node<'_>) -> Option<&'static str> {
     let owner = argument.parent()?.parent()?;
     match owner.kind() {
-        "element_access_expression" => Some("configuration-key").filter(|_| {
-            owner
-                .child_by_field_name("expression")
-                .is_some_and(|receiver| {
-                    matches!(
-                        text(source, terminal(receiver)),
-                        "Configuration" | "AppSettings"
-                    )
-                })
-        }),
+        "element_access_expression" => owner
+            .child_by_field_name("expression")
+            .is_some_and(|receiver| {
+                matches!(
+                    text(source, terminal(receiver)),
+                    "Configuration" | "AppSettings"
+                )
+            })
+            .then_some("configuration-key"),
         "object_creation_expression" => {
             let ty = owner.child_by_field_name("type")?;
             text(source, terminal(ty))
