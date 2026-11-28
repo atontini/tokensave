@@ -148,8 +148,9 @@ jobs:
           large-packages: false
           swap-storage: false
 
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: 1.100.1
           components: rustfmt, clippy
 
       - uses: Swatinem/rust-cache@v2
@@ -180,8 +181,9 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v5
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: 1.100.1
           components: clippy
       - uses: Swatinem/rust-cache@v2
       - run: cargo clippy --workspace --all-targets --locked
@@ -206,8 +208,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: 1.100.1
           components: rustfmt
       - run: cargo fmt --all -- --check
 
@@ -220,7 +223,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.100.1
       - uses: Swatinem/rust-cache@v2
         with:
           prefix-key: v1-rust-features

@@ -156,8 +156,9 @@ jobs:
           ref: ${{ needs.setup.outputs.revision }}
           persist-credentials: false
 
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: 1.100.1
           targets: ${{ matrix.target }}
 
       - name: Build release binary
@@ -617,7 +618,9 @@ jobs:
         with:
           ref: ${{ needs.setup.outputs.revision }}
 
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.100.1
 
       - name: Publish
         shell: bash
@@ -644,7 +647,9 @@ jobs:
         with:
           ref: ${{ needs.setup.outputs.revision }}
 
-      - uses: dtolnay/rust-toolchain@1.100.0
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.100.1
 
       - uses: actions/setup-python@v6
         with:
