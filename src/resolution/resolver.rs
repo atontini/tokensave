@@ -948,7 +948,7 @@ impl<'a> ReferenceResolver<'a> {
                         && match member {
                             None => node.kind == NodeKind::Class,
                             Some(_) if uref.reference_kind == EdgeKind::Calls => {
-                                is_csharp_callable(node)
+                                is_csharp_callable(&node.kind)
                             }
                             Some(_) => is_csharp_data_member(&node.kind),
                         }
